@@ -4,25 +4,11 @@ from flask_restful import reqparse
 
 users = [
     {
-        "user_id" : 43,
-        "username" : "Alvin",
-        "email": "Alvin@gmail.com",
+        "user_id" : 2,
+        "username" : "hannah",
+        "email": "hannah@gmail.com",
         "default_location":"Kiambu",
         "password":"1234"
-    },
-    {
-        "user_id" : 23,
-        "username" : "Charity",
-        "email": "Charity@gmail.com",
-        "default_location":"Kericho",
-        "password":"54321"
-    },
-    {
-        "user_id" : 23,
-        "username" : "Bilha",
-        "email": "Bilha@gmail.com",
-        "default_location":"Ngong",
-        "password":"54321"
     }]
 
 # User roles
@@ -53,8 +39,8 @@ class Users(object):
         return user
 
     def filter_password_detail(self,password):
-        passw = [passw for passw in users if passw['password']==password]
-        return passw
+        psswrd = [psswrd for psswrd in users if psswrd['password']==password]
+        return psswrd
 
     def user_login(self, email, password):
         registered_user = Users.filter_user_detail(self, email)
