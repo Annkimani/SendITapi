@@ -10,9 +10,9 @@ api = Api(v1)
 #register the blueprints
 api.add_resource(CreateParcels, "/parcel", strict_slashes=False)
 api.add_resource(AllOrders, "/parcels", strict_slashes=False)
-api.add_resource(SpecificOrder, '/parcels/<int:order_id>', strict_slashes=False)
+api.add_resource(SpecificOrder, '/parcels/<int:parcel_id>', strict_slashes=False)
 api.add_resource(UserSignup, "/users/signup", strict_slashes=False)
 api.add_resource(UserLogin, "/users/login", strict_slashes=False)
-api.add_resource(CancelOrder, "/parcels/cancel/<int:order_id>", strict_slashes=False)
-api.add_resource(GetOneOrder, "/parcels/userorder/username", strict_slashes=False)
+api.add_resource(CancelOrder, "/parcels/cancel/<int:parcel_id>", strict_slashes=False)
+api.add_resource(GetOneOrder, "/parcels/userorder/<int:user_id>", strict_slashes=False)
 
