@@ -2,8 +2,8 @@ from flask import Flask, Blueprint
 from flask_restful import Api, Resource
 import os
 
-from app.api.v1.views.parcel_views import CreateParcels, AllOrders, SpecificOrder, CancelOrder, GetOneOrder
-from app.api.v1.views.user__views import UserLogin, UserSignup
+from app.api.v1.view import CreateParcels, AllOrders, SpecificOrder, CancelOrder, GetOneOrder
+from app.api.v1.view import UserLogin, UserSignup
 v1 = Blueprint('v1', __name__, url_prefix='/api/v1')
 
 api = Api(v1)
@@ -14,4 +14,5 @@ api.add_resource(SpecificOrder, '/parcels/<int:order_id>', strict_slashes=False)
 api.add_resource(UserSignup, "/users/signup", strict_slashes=False)
 api.add_resource(UserLogin, "/users/login", strict_slashes=False)
 api.add_resource(CancelOrder, "/parcels/cancel/<int:order_id>", strict_slashes=False)
-api.add_resource(GetOneOrder, "/parcels/userorder/<int:user_id>", strict_slashes=False)
+api.add_resource(GetOneOrder, "/parcels/userorder/username", strict_slashes=False)
+
