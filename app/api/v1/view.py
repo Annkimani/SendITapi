@@ -35,13 +35,12 @@ class UserLogin(Resource):
 class CreateParcels(Resource):
     def post(self):
         data = request.get_json()
-        current_location = data['current_location']
+        sender_location = data['sender_location']
         receiver_name = data['receiver_name']
-        receivers_location = data['receivers_location']
         pickup_location = data['pickup_location']
         weight = data['weight']
         price = data['price']
-        parcel.new_parcel(current_location, receiver_name, receivers_location, pickup_location,weight,price)
+        parcel.new_parcel(sender_location, receiver_name, pickup_location,weight,price)
         parcel = parcel.db
         return make_response(jsonify({"message": "The parcel order has been successfully created"}), 200)
 
@@ -51,19 +50,18 @@ class AllOrders(Resource):
             
 class SpecificOrder(Resource):
 
-    def get(self, order_id):
-        # data = request.get_json()
-        single_order = parcel.single_parcel(order_id)
+    def get(self, parcel_id):
+        single_order = parcel.single_parcel(parcel_id)
         return single_order
 
 class CancelOrder(Resource):
-    def put(self, order_id):
-        can_order = parcel.cancel_order(order_id)
+    def put(self, parcel_id):
+        can_order = parcel.cancel_order(parcel_id)
         return can_order 
 
 class GetOneOrder(Resource):
-    def get(self, username):
-        all_user_orders = parcel.get_orders_by_specific_user(username)
+    def get(self, user_id):
+        all_user_orders = parcel.get_orders_by_specific_user(user_id)
         return all_user_orders
 
         

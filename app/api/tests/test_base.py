@@ -16,8 +16,7 @@ class BaseTest(unittest.TestCase):
         self.app = create_app("testing")
         self.client = self.app.test_client()
         self.parcel_dummy_data = {
-        "order_id" : 1,
-        "current_location": "Nairobi",
+        "parcel_id" : 1,
 	    "receiver_name": "Anne",
 	    "receivers_location": "kisumu",
 	    "pickup_location": "delta",
@@ -39,10 +38,7 @@ class BaseTest(unittest.TestCase):
         }
 
     def tearDown(self):
-        #A class method called before tests in an individual class run.
         parcels.db.clear()
-    # def tearDown(self):
-    #     user.udb.clear()
 
 
         

@@ -7,47 +7,36 @@ users = [
         "user_id" : 2,
         "username" : "Hannah",
         "email": "hannah@gmail.com",
-        "default_location":"Kiambu",
         "password":"0000"
     }]
 
-customer = "Normal user"
-admin = "User administrator"
 
 parcels = [
     {
-        "order_id" : 1,
-        "current_location": "Nairobi",
+        "parcel_id" : 1,
+        "sender_location": "Nairobi",
 	    "receiver_name": "Anne",
-	    "receivers_location": "kisumu",
 	    "pickup_location": "delta",
 	    "weight": 20,
 	    "price": 1200,
 	    "status": "pending"
     }]
 
-# Order status after pickup
 pending= "Your order is waiting to be sent"
 on_transit= "in Transit"
 delivered= "Delivered"
 cancelled= "Cancelled"
 
-
-
-
 class Users(object):
-    """Creating model for users"""
     def __init__(self):
         self.udb = users
         self.user_id = len(self.udb)
-        self.role = customer
 
-    def create_user(self, username, email, default_location, password):
+    def create_user(self, username, email, password):
         user = {
             "user_id" :self.user_id + 1,
             "username": username,
             "email": email,
-            "default_location": default_location,
             "password": password  
         } 
 
@@ -59,42 +48,40 @@ class Users(object):
         return user
 
     def filter_password_detail(self,password):
-        passw = [passw for passw in users if passw['password']==password]
-        return passw
+        psswrd = [psswrd for psswrd in users if psswrd['password']==password]
+        return psswrd
 
     def user_login(self, email, password):
-        registered_user = Users.filter_user_detail(self, email)
-        registered_user2 = Users.filter_password_detail(self, password)
-        if not registered_user:
+        user_A = Users.filter_user_detail(self, email)
+        user_B = Users.filter_password_detail(self, password)
+        if not user_A:
             return make_response(jsonify({
                 "message" : "{} is not a registered user".format(email)
             }), 201)
-        if registered_user:
+        if user_A:
             return make_response(jsonify({
                 "message" : "login successful"
             }), 201)
-        if not registered_user2:
+        if not user_B:
             return make_response(jsonify({
                 "message" : "{} is not a registered user".format(email)
             }), 400)
-        elif registered_user2:
+        elif user_B:
             return make_response(jsonify({
                 "welcome" : "Login successful"
             }))
 
 class ParcelOrder(object):
-    """Creating model for parcels"""
     def __init__(self):
         self.db = parcels
-        self.order_id = len(self.db)
+        self.parcel_id = len(self.db)
         self.status = pending
 
-    def new_parcel(self, current_location,receiver_name ,receivers_location, pickup_location, weight, price):
+    def new_parcel(self, sender_location,receiver_name ,receiver_location, pickup_location, weight, price):
         new_order_data = {
-            "order_id": self.order_id + 1,
-            "current_location": current_location,
+            "parcel_id": self.parcel_id + 1,
+            "sender_location": sender_location,
             "receiver_name":receiver_name,
-            "receivers_location":receivers_location,
             "pickup_location": pickup_location,
             "weight": weight,
             "price": price,
@@ -107,29 +94,28 @@ class ParcelOrder(object):
     def parcels_list(self):
         return self.db
 
-    def single_parcel(self, order_id):
+    def single_parcel(self, parcel_id):
         for parcel in parcels:
-            if parcel["order_id"]== order_id:
+            if parcel["parcel_id"]== parcel_id:
                 return parcel
             else:
                 return {"parcel": "does not exist"}, 404
     
-    def cancel_order(self, order_id):
+    def cancel_order(self, parcel_id):
         for parcel in parcels:
             if parcel["status"] == delivered:
-                return {'parcel': "This parcel was already delivered and therefore cannot be canceled"}
-            elif parcel['order_id'] == order_id:
+                return {'parcel': "Failed. Parcel already delivered"}
+            elif parcel['parcel_id'] == parcel_id:
                 parcel.update({"status": cancelled})
                 return {'parcel': 'Order Cancelled'}
 
     def clear(self):
     	self.db = []
 
-    def get_orders_by_specific_user(self,username):
-        """"Return orders by specific user"""
+    def get_orders_by_specific_user(self,user_id):
         user_orders = []
-        for parcel in parcels:#Iterate over a sequence
-            if (parcel['username'] == username):
+        for parcel in parcels:
+            if (parcel['user_id'] == user_id):
                 user_orders.append(parcel)
             return user_orders
         return "Orders not found", 404
